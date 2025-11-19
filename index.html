@@ -1,11 +1,17 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Graduate Business Kiosk</title>
     
-    <!-- ElevenLabs Widget Script --><script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
+    <!-- 
+         FIX: Switched back to the stable ElevenLabs hosted script.
+         The 'unpkg' version can sometimes cause "read-only property" errors 
+         in strict browser environments (like Chrome) because it tries to 
+         polyfill mediaDevices aggressively.
+    -->
+    <script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
 
     <style>
         /* Reset & Core Layout */
@@ -153,20 +159,25 @@
 </head>
 <body>
 
-    <!-- SCREEN 1: THE LOBBY --><div id="lobby-screen">
-        <!-- Gonzaga Bulldog Mascot --><img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+    <!-- SCREEN 1: THE LOBBY -->
+    <div id="lobby-screen">
+        <!-- Gonzaga Bulldog Mascot: Remember to change this URL to your real image -->
+        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
         
         <h1>Choose your path:</h1>
         
         <div class="card-container">
-            <!-- AGENT 1: PROSPECTIVE --><div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+            <!-- AGENT 1: PROSPECTIVE -->
+            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
                 <div class="card-info">
                     <h2>Prospective Student</h2>
                     <p>Information for prospective Graduate Business Students</p>
                 </div>
             </div>
 
-            <!-- AGENT 2: CURRENT --><div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+            <!-- AGENT 2: CURRENT -->
+            <!-- Now pointing to the same agent for testing purposes -->
+            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
                 <div class="card-info">
                     <h2>Current Student</h2>
                     <p>Information for current Graduate Business Students</p>
@@ -175,11 +186,13 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: THE AGENT INTERFACE --><div id="agent-screen">
+    <!-- SCREEN 2: THE AGENT INTERFACE -->
+    <div id="agent-screen">
         <button class="back-button" onclick="resetLobby()">← End Chat</button>
         <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
         <div id="widget-container">
-            <!-- Widget is injected here via JS --></div>
+            <!-- Widget is injected here via JS -->
+        </div>
     </div>
 
     <script>
@@ -192,12 +205,20 @@
         // --- CORE FUNCTIONS ---
 
         function startAgent(agentId) {
+            console.log("Start Agent clicked for ID:", agentId);
+
+            // Safety Check: Did the user replace the ID?
+            if (agentId.includes('REPLACE_WITH')) {
+                alert("Configuration Error: You need to put the second ElevenLabs Agent ID in the index.html file.");
+                return;
+            }
+
             // 1. Switch Screens
             document.getElementById('lobby-screen').style.display = 'none';
             document.getElementById('agent-screen').style.display = 'block';
 
             // 2. Create the Widget Dynamically
-            // This ensures a fresh session every time
+            console.log("Injecting widget...");
             const container = document.getElementById('widget-container');
             container.innerHTML = ''; // Clear any old widgets
 
@@ -210,6 +231,8 @@
         }
 
         function resetLobby() {
+            console.log("Resetting to Lobby...");
+            
             // 1. Clear the widget (This kills the audio connection)
             const container = document.getElementById('widget-container');
             container.innerHTML = ''; 
@@ -224,21 +247,19 @@
         }
 
         // --- IDLE TIMER LOGIC ---
-        // We reset the timer whenever the user touches the screen
         
         function startIdleTimer() {
             clearTimeout(idleTimer);
             document.getElementById('timeout-msg').style.display = 'none';
 
             idleTimer = setTimeout(() => {
+                console.log("Idle timeout reached. Resetting.");
                 resetLobby();
             }, IDLE_TIMEOUT_SECONDS * 1000);
         }
 
         // Listen for touches to reset the timer
-        // (Users might tap the widget buttons, which counts as activity)
         document.addEventListener('click', () => {
-            // Only reset if we are actually in a chat
             if(document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
             }
