@@ -1,4 +1,4 @@
-
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,33 @@
     <title>Graduate Business Kiosk</title>
     
     <!-- 
-         FIX: Switched back to the stable ElevenLabs hosted script.
-         The 'unpkg' version can sometimes cause "read-only property" errors 
-         in strict browser environments (like Chrome) because it tries to 
-         polyfill mediaDevices aggressively.
+        CRITICAL SHIM: This script runs before the widget to prevent the 
+        "Cannot assign to read only property" error on strict browsers (Chrome/WebView).
     -->
-    <script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
+    <script>
+        (function() {
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Store the original function
+                    const originalGUM = navigator.mediaDevices.getUserMedia;
+                    // Attempt to make it writable/configurable if it isn't
+                    try {
+                        Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+                            writable: true,
+                            value: originalGUM
+                        });
+                    } catch (e) {
+                        console.warn("Could not patch getUserMedia:", e);
+                    }
+                }
+            } catch (err) {
+                console.warn("Shim error:", err);
+            }
+        })();
+    </script>
+
+    <!-- Official ElevenLabs Widget Script (Restored) -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
     <style>
         /* Reset & Core Layout */
@@ -83,8 +104,6 @@
             background: #041E42;
         }
 
-        /* Avatar styles removed as they are no longer used in cards */
-
         .card-info {
             text-align: center; /* Center text within cards */
         }
@@ -118,6 +137,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            z-index: 10;
         }
 
         /* Custom styling for the widget element itself to ensure it fills space */
@@ -141,6 +162,25 @@
             cursor: pointer;
         }
         
+        .tap-instruction {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #5E8AB4; /* River Blue */
+            font-size: 1.5rem;
+            font-weight: 500;
+            z-index: 50;
+            animation: pulse 2s infinite;
+            pointer-events: none; /* Let clicks pass through to widget */
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
         .timeout-warning {
             position: absolute;
             bottom: 100px;
@@ -153,6 +193,7 @@
             pointer-events: none;
             color: white;
             font-weight: bold;
+            z-index: 100;
         }
 
     </style>
@@ -161,8 +202,8 @@
 
     <!-- SCREEN 1: THE LOBBY -->
     <div id="lobby-screen">
-        <!-- Gonzaga Bulldog Mascot: Remember to change this URL to your real image -->
-        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+        <!-- Gonzaga Bulldog Mascot -->
+        <img src="https://i.imgur.com/your-bulldog-image.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
         
         <h1>Choose your path:</h1>
         
@@ -176,7 +217,6 @@
             </div>
 
             <!-- AGENT 2: CURRENT -->
-            <!-- Now pointing to the same agent for testing purposes -->
             <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
                 <div class="card-info">
                     <h2>Current Student</h2>
@@ -189,7 +229,12 @@
     <!-- SCREEN 2: THE AGENT INTERFACE -->
     <div id="agent-screen">
         <button class="back-button" onclick="resetLobby()">← End Chat</button>
+        
+        <!-- New Instruction Text -->
+        <div class="tap-instruction">Tap the circle below to speak</div>
+        
         <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
+        
         <div id="widget-container">
             <!-- Widget is injected here via JS -->
         </div>
@@ -197,19 +242,15 @@
 
     <script>
         // --- CONFIGURATION ---
-        const IDLE_TIMEOUT_SECONDS = 90; // Reset after 90 seconds of silence/no touch
+        const IDLE_TIMEOUT_SECONDS = 90; 
         
         let idleTimer;
-        let warningTimer;
         
-        // --- CORE FUNCTIONS ---
-
         function startAgent(agentId) {
             console.log("Start Agent clicked for ID:", agentId);
 
-            // Safety Check: Did the user replace the ID?
             if (agentId.includes('REPLACE_WITH')) {
-                alert("Configuration Error: You need to put the second ElevenLabs Agent ID in the index.html file.");
+                alert("Error: Agent ID missing.");
                 return;
             }
 
@@ -220,7 +261,7 @@
             // 2. Create the Widget Dynamically
             console.log("Injecting widget...");
             const container = document.getElementById('widget-container');
-            container.innerHTML = ''; // Clear any old widgets
+            container.innerHTML = ''; 
 
             const widget = document.createElement('elevenlabs-convai');
             widget.setAttribute('agent-id', agentId);
@@ -232,33 +273,24 @@
 
         function resetLobby() {
             console.log("Resetting to Lobby...");
-            
-            // 1. Clear the widget (This kills the audio connection)
             const container = document.getElementById('widget-container');
             container.innerHTML = ''; 
 
-            // 2. Switch Screens
             document.getElementById('agent-screen').style.display = 'none';
             document.getElementById('lobby-screen').style.display = 'flex';
             document.getElementById('timeout-msg').style.display = 'none';
-
-            // 3. Stop Timer
             clearTimeout(idleTimer);
         }
 
-        // --- IDLE TIMER LOGIC ---
-        
         function startIdleTimer() {
             clearTimeout(idleTimer);
             document.getElementById('timeout-msg').style.display = 'none';
 
             idleTimer = setTimeout(() => {
-                console.log("Idle timeout reached. Resetting.");
                 resetLobby();
             }, IDLE_TIMEOUT_SECONDS * 1000);
         }
 
-        // Listen for touches to reset the timer
         document.addEventListener('click', () => {
             if(document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
