@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Graduate Business Kiosk</title>
+    
+    <!-- ElevenLabs Widget Script --><script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
+
+    <style>
+        /* Reset & Core Layout */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #041E42; /* Gonzaga Navy Blue */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: white;
+            overflow: hidden; /* Prevent scrolling on kiosk */
+        }
+
+        /* --- LOBBY SCREEN STYLES --- */
+        #lobby-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .mascot-image {
+            max-width: 80%; /* Adjust size as needed for Neat Frame */
+            max-height: 40vh; /* Limit height to leave room for cards */
+            margin-bottom: 30px;
+            border-radius: 10px; /* Slightly rounded corners for integration */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); /* Stronger shadow for mascot */
+        }
+
+        h1 {
+            font-size: 2.2rem; /* Slightly smaller now that mascot is main visual */
+            margin-bottom: 30px; /* Less space needed after mascot */
+            font-weight: 300;
+            color: #d0d0d0; /* Lighter grey for contrast with background */
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column; /* Stack vertically for Portrait Mode */
+            gap: 25px;
+            width: 100%;
+            max-width: 450px; /* Slightly wider for the longer text */
+        }
+
+        .agent-card {
+            /* Gonzaga Royal Blue to Navy Gradient */
+            background: linear-gradient(145deg, #002F6C, #041E42);
+            /* Lighter "River Blue" border for contrast */
+            border: 1px solid #5E8AB4;
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            display: flex; /* Changed to flex to center content, no avatar now */
+            flex-direction: column; /* Stack text info vertically */
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Gap between title and description */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .agent-card:active {
+            transform: scale(0.98);
+            background: #041E42;
+        }
+
+        /* Avatar styles removed as they are no longer used in cards */
+
+        .card-info {
+            text-align: center; /* Center text within cards */
+        }
+
+        .card-info h2 {
+            margin: 0;
+            font-size: 1.6rem; /* Slightly larger heading for cards now */
+            color: #ffffff;
+        }
+
+        .card-info p {
+            margin: 0;
+            color: #d0d0d0; /* Slightly brighter text for readability on blue */
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        /* --- AGENT SCREEN STYLES --- */
+        #agent-screen {
+            display: none; /* Hidden by default */
+            height: 100%;
+            width: 100%;
+            position: relative;
+            background-color: #041E42; /* Ensure agent screen matches background */
+        }
+
+        /* Container for the ElevenLabs widget */
+        #widget-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Custom styling for the widget element itself to ensure it fills space */
+        elevenlabs-convai {
+            width: 100%;
+            height: 100%;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            z-index: 100; /* Above the widget */
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .timeout-warning {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(200, 16, 46, 0.9); /* Gonzaga Red for warnings */
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none; /* Hidden by default */
+            pointer-events: none;
+            color: white;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: THE LOBBY --><div id="lobby-screen">
+        <!-- Gonzaga Bulldog Mascot --><img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+        
+        <h1>Choose your path:</h1>
+        
+        <div class="card-container">
+            <!-- AGENT 1: PROSPECTIVE --><div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+                <div class="card-info">
+                    <h2>Prospective Student</h2>
+                    <p>Information for prospective Graduate Business Students</p>
+                </div>
+            </div>
+
+            <!-- AGENT 2: CURRENT --><div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+                <div class="card-info">
+                    <h2>Current Student</h2>
+                    <p>Information for current Graduate Business Students</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: THE AGENT INTERFACE --><div id="agent-screen">
+        <button class="back-button" onclick="resetLobby()">← End Chat</button>
+        <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
+        <div id="widget-container">
+            <!-- Widget is injected here via JS --></div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const IDLE_TIMEOUT_SECONDS = 90; // Reset after 90 seconds of silence/no touch
+        
+        let idleTimer;
+        let warningTimer;
+        
+        // --- CORE FUNCTIONS ---
+
+        function startAgent(agentId) {
+            // 1. Switch Screens
+            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('agent-screen').style.display = 'block';
+
+            // 2. Create the Widget Dynamically
+            // This ensures a fresh session every time
+            const container = document.getElementById('widget-container');
+            container.innerHTML = ''; // Clear any old widgets
+
+            const widget = document.createElement('elevenlabs-convai');
+            widget.setAttribute('agent-id', agentId);
+            container.appendChild(widget);
+
+            // 3. Start the Idle Timer
+            startIdleTimer();
+        }
+
+        function resetLobby() {
+            // 1. Clear the widget (This kills the audio connection)
+            const container = document.getElementById('widget-container');
+            container.innerHTML = ''; 
+
+            // 2. Switch Screens
+            document.getElementById('agent-screen').style.display = 'none';
+            document.getElementById('lobby-screen').style.display = 'flex';
+            document.getElementById('timeout-msg').style.display = 'none';
+
+            // 3. Stop Timer
+            clearTimeout(idleTimer);
+        }
+
+        // --- IDLE TIMER LOGIC ---
+        // We reset the timer whenever the user touches the screen
+        
+        function startIdleTimer() {
+            clearTimeout(idleTimer);
+            document.getElementById('timeout-msg').style.display = 'none';
+
+            idleTimer = setTimeout(() => {
+                resetLobby();
+            }, IDLE_TIMEOUT_SECONDS * 1000);
+        }
+
+        // Listen for touches to reset the timer
+        // (Users might tap the widget buttons, which counts as activity)
+        document.addEventListener('click', () => {
+            // Only reset if we are actually in a chat
+            if(document.getElementById('agent-screen').style.display === 'block') {
+                startIdleTimer();
+            }
+        });
+
+        document.addEventListener('touchstart', () => {
+            if(document.getElementById('agent-screen').style.display === 'block') {
+                startIdleTimer();
+            }
+        });
+
+    </script>
+</body>
+</html>
