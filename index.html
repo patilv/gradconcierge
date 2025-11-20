@@ -155,7 +155,7 @@
             cursor: pointer;
         }
         
-        /* New Contact Info Styles */
+        /* Contact Info Styles */
         .contact-info {
             position: absolute;
             top: 110px; /* Positioned below the back button */
@@ -172,6 +172,7 @@
             font-size: 0.85rem; /* Slightly smaller font to fit everyone */
             max-height: 70vh; /* Prevent overflow on small screens */
             overflow-y: auto; /* Scroll if absolutely necessary */
+            display: none; /* Hidden by default, toggled by JS */
         }
 
         .contact-block {
@@ -230,7 +231,7 @@
         
         <div class="card-container">
             <!-- AGENT 1 -->
-            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
                 <div class="card-info">
                     <h2>Prospective Student</h2>
                     <p>Information for prospective Graduate Business Students</p>
@@ -238,7 +239,7 @@
             </div>
 
             <!-- AGENT 2 (Using same ID for now) -->
-            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg')">
+            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'current')">
                 <div class="card-info">
                     <h2>Current Student</h2>
                     <p>Information for current Graduate Business Students</p>
@@ -251,8 +252,8 @@
     <div id="agent-screen">
         <button class="back-button" onclick="resetLobby()">← End Chat</button>
         
-        <!-- Contact Information Block -->
-        <div class="contact-info">
+        <!-- Contact Block for PROSPECTIVE Students -->
+        <div id="info-prospective" class="contact-info">
             <!-- Hannah -->
             <div class="contact-block">
                 <h3>Hannah Johanson</h3>
@@ -281,6 +282,16 @@
                 <p>Email: brajcich@gonzaga.edu</p>
             </div>
         </div>
+
+        <!-- Contact Block for CURRENT Students -->
+        <div id="info-current" class="contact-info">
+            <div class="contact-block">
+                <h3>Claudia Rios-Jordan</h3>
+                <span class="role">Coordinator of the MBA-AIE program & Graduate Academic Advisor</span>
+                <p>Phone: (509) 313-3764</p>
+                <p>Email: rios-jordan@gonzaga.edu</p>
+            </div>
+        </div>
         
         <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
         
@@ -294,8 +305,8 @@
         const IDLE_TIMEOUT_SECONDS = 300; 
         let idleTimer;
         
-        function startAgent(agentId) {
-            console.log("Start Agent clicked for ID:", agentId);
+        function startAgent(agentId, mode) {
+            console.log("Start Agent clicked for ID:", agentId, "Mode:", mode);
 
             if (agentId.includes('REPLACE_WITH')) {
                 alert("Error: Agent ID missing.");
@@ -306,15 +317,25 @@
             document.getElementById('lobby-screen').style.display = 'none';
             document.getElementById('agent-screen').style.display = 'block';
 
-            // 2. Inject Widget
+            // 2. Toggle Correct Contact Info
+            // First hide both
+            document.getElementById('info-prospective').style.display = 'none';
+            document.getElementById('info-current').style.display = 'none';
+
+            // Show the specific one based on the 'mode' parameter passed from the button
+            if (mode === 'prospective') {
+                document.getElementById('info-prospective').style.display = 'block';
+            } else if (mode === 'current') {
+                document.getElementById('info-current').style.display = 'block';
+            }
+
+            // 3. Inject Widget using HTML String (Fixes disappearance issue)
             const container = document.getElementById('widget-container');
-            container.innerHTML = ''; 
+            
+            // Using innerHTML forces the browser to parse the tag fresh
+            container.innerHTML = `<elevenlabs-convai agent-id="${agentId}"></elevenlabs-convai>`;
 
-            const widget = document.createElement('elevenlabs-convai');
-            widget.setAttribute('agent-id', agentId);
-            container.appendChild(widget);
-
-            // 3. Start the initial timer
+            // 4. Start the initial timer
             startIdleTimer();
         }
 
@@ -326,6 +347,11 @@
             document.getElementById('agent-screen').style.display = 'none';
             document.getElementById('lobby-screen').style.display = 'flex';
             document.getElementById('timeout-msg').style.display = 'none';
+            
+            // Hide contact info blocks on reset just to be clean
+            document.getElementById('info-prospective').style.display = 'none';
+            document.getElementById('info-current').style.display = 'none';
+
             clearTimeout(idleTimer);
         }
 
