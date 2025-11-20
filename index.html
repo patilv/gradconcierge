@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,12 +6,30 @@
     <title>Graduate Business Kiosk</title>
     
     <!-- 
-         FIX: Switched back to the stable ElevenLabs hosted script.
-         The 'unpkg' version you were using attempts to modify browser security settings 
-         (getUserMedia), which causes the "Cannot assign to read only property" error 
-         on strict devices like the Neat Frame. This version is safe for kiosks.
+        CRITICAL SHIM: Prevents "Cannot assign to read only property" error.
     -->
-    <script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
+    <script>
+        (function() {
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    const originalGUM = navigator.mediaDevices.getUserMedia;
+                    try {
+                        Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+                            writable: true,
+                            value: originalGUM
+                        });
+                    } catch (e) {
+                        console.warn("Could not patch getUserMedia:", e);
+                    }
+                }
+            } catch (err) {
+                console.warn("Shim error:", err);
+            }
+        })();
+    </script>
+
+    <!-- Official ElevenLabs Widget Script -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
     <style>
         /* Reset & Core Layout */
@@ -159,7 +176,7 @@
     <!-- SCREEN 1: THE LOBBY -->
     <div id="lobby-screen">
         <!-- Gonzaga Bulldog Mascot -->
-        <img src="https://i.imgur.com/your-bulldog-image.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
         
         <h1>Choose your path:</h1>
         
@@ -220,7 +237,6 @@
             container.appendChild(widget);
 
             // 3. Attach Event Listeners to handling "Active Call" state
-            // Note: These events work with the v1 script as well once the custom element upgrades
             widget.addEventListener('elevenlabs-convai:call:start', () => {
                 console.log("Call STARTED. Stopping Idle Timer.");
                 isCallActive = true;
