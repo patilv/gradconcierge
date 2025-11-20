@@ -7,31 +7,12 @@
     <title>Graduate Business Kiosk</title>
     
     <!-- 
-        CRITICAL SHIM: Prevents "Cannot assign to read only property" error.
-        Required for Neat Frame / Chrome WebView.
+         FIX: Switched back to the stable ElevenLabs hosted script.
+         The 'unpkg' version you were using attempts to modify browser security settings 
+         (getUserMedia), which causes the "Cannot assign to read only property" error 
+         on strict devices like the Neat Frame. This version is safe for kiosks.
     -->
-    <script>
-        (function() {
-            try {
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    const originalGUM = navigator.mediaDevices.getUserMedia;
-                    try {
-                        Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-                            writable: true,
-                            value: originalGUM
-                        });
-                    } catch (e) {
-                        console.warn("Could not patch getUserMedia:", e);
-                    }
-                }
-            } catch (err) {
-                console.warn("Shim error:", err);
-            }
-        })();
-    </script>
-
-    <!-- Official ElevenLabs Widget Script -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    <script src="https://elevenlabs.io/convai-widget/v1" async type="text/javascript"></script>
 
     <style>
         /* Reset & Core Layout */
@@ -137,9 +118,9 @@
             z-index: 10;
         }
 
-        /* Ensure widget is centered but not forced to full width */
+        /* Ensure widget is centered */
         elevenlabs-convai {
-            /* The widget will render its own size (usually a circle) */
+            /* The widget will render its own size */
         }
 
         .back-button {
@@ -178,7 +159,7 @@
     <!-- SCREEN 1: THE LOBBY -->
     <div id="lobby-screen">
         <!-- Gonzaga Bulldog Mascot -->
-        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+        <img src="https://i.imgur.com/your-bulldog-image.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
         
         <h1>Choose your path:</h1>
         
@@ -213,8 +194,10 @@
     </div>
 
     <script>
+        // Kiosk Timer (Only runs when NOT in a call)
         const IDLE_TIMEOUT_SECONDS = 90; 
         let idleTimer;
+        let isCallActive = false; // Flag to track call state
         
         function startAgent(agentId) {
             console.log("Start Agent clicked for ID:", agentId);
@@ -228,12 +211,32 @@
             document.getElementById('lobby-screen').style.display = 'none';
             document.getElementById('agent-screen').style.display = 'block';
 
-            // 2. Direct Injection of the Embed Code
-            // This destroys any previous instance and creates a fresh one
+            // 2. Inject Widget
             const container = document.getElementById('widget-container');
-            container.innerHTML = `<elevenlabs-convai agent-id="${agentId}"></elevenlabs-convai>`;
+            container.innerHTML = ''; 
 
-            // 3. Start Timer
+            const widget = document.createElement('elevenlabs-convai');
+            widget.setAttribute('agent-id', agentId);
+            container.appendChild(widget);
+
+            // 3. Attach Event Listeners to handling "Active Call" state
+            // Note: These events work with the v1 script as well once the custom element upgrades
+            widget.addEventListener('elevenlabs-convai:call:start', () => {
+                console.log("Call STARTED. Stopping Idle Timer.");
+                isCallActive = true;
+                clearTimeout(idleTimer); // Kill the timer immediately
+                document.getElementById('timeout-msg').style.display = 'none';
+            });
+
+            widget.addEventListener('elevenlabs-convai:call:end', () => {
+                console.log("Call ENDED. Resetting Lobby.");
+                isCallActive = false;
+                // Give a tiny delay so the user sees it ended, then reset
+                setTimeout(() => resetLobby(), 2000);
+            });
+
+            // 4. Start the initial timer (waiting for user to tap the circle)
+            isCallActive = false;
             startIdleTimer();
         }
 
@@ -246,18 +249,30 @@
             document.getElementById('lobby-screen').style.display = 'flex';
             document.getElementById('timeout-msg').style.display = 'none';
             clearTimeout(idleTimer);
+            isCallActive = false;
         }
 
         function startIdleTimer() {
+            // If a call is active, we NEVER start the timer.
+            if (isCallActive) {
+                console.log("Call is active. Idle timer ignored.");
+                return;
+            }
+
             clearTimeout(idleTimer);
             document.getElementById('timeout-msg').style.display = 'none';
 
+            console.log("Starting Idle Timer (" + IDLE_TIMEOUT_SECONDS + "s)");
             idleTimer = setTimeout(() => {
-                resetLobby();
+                // Double check call state before resetting
+                if (!isCallActive) {
+                    console.log("Idle timeout reached. Resetting.");
+                    resetLobby();
+                }
             }, IDLE_TIMEOUT_SECONDS * 1000);
         }
 
-        // Reset timer on interactions
+        // Reset timer on interactions (only if NOT in a call)
         document.addEventListener('click', () => {
             if(document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
