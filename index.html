@@ -176,7 +176,7 @@
     <!-- SCREEN 1: THE LOBBY -->
     <div id="lobby-screen">
         <!-- Gonzaga Bulldog Mascot -->
-        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
+        <img src="https://i.imgur.com/your-bulldog-image.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
         
         <h1>Choose your path:</h1>
         
@@ -211,10 +211,9 @@
     </div>
 
     <script>
-        // Kiosk Timer (Only runs when NOT in a call)
-        const IDLE_TIMEOUT_SECONDS = 90; 
+        // Kiosk Timer (Simple timeout, increased to 5 minutes)
+        const IDLE_TIMEOUT_SECONDS = 300; 
         let idleTimer;
-        let isCallActive = false; // Flag to track call state
         
         function startAgent(agentId) {
             console.log("Start Agent clicked for ID:", agentId);
@@ -236,23 +235,7 @@
             widget.setAttribute('agent-id', agentId);
             container.appendChild(widget);
 
-            // 3. Attach Event Listeners to handling "Active Call" state
-            widget.addEventListener('elevenlabs-convai:call:start', () => {
-                console.log("Call STARTED. Stopping Idle Timer.");
-                isCallActive = true;
-                clearTimeout(idleTimer); // Kill the timer immediately
-                document.getElementById('timeout-msg').style.display = 'none';
-            });
-
-            widget.addEventListener('elevenlabs-convai:call:end', () => {
-                console.log("Call ENDED. Resetting Lobby.");
-                isCallActive = false;
-                // Give a tiny delay so the user sees it ended, then reset
-                setTimeout(() => resetLobby(), 2000);
-            });
-
-            // 4. Start the initial timer (waiting for user to tap the circle)
-            isCallActive = false;
+            // 3. Start the initial timer
             startIdleTimer();
         }
 
@@ -265,30 +248,20 @@
             document.getElementById('lobby-screen').style.display = 'flex';
             document.getElementById('timeout-msg').style.display = 'none';
             clearTimeout(idleTimer);
-            isCallActive = false;
         }
 
         function startIdleTimer() {
-            // If a call is active, we NEVER start the timer.
-            if (isCallActive) {
-                console.log("Call is active. Idle timer ignored.");
-                return;
-            }
-
             clearTimeout(idleTimer);
             document.getElementById('timeout-msg').style.display = 'none';
 
             console.log("Starting Idle Timer (" + IDLE_TIMEOUT_SECONDS + "s)");
             idleTimer = setTimeout(() => {
-                // Double check call state before resetting
-                if (!isCallActive) {
-                    console.log("Idle timeout reached. Resetting.");
-                    resetLobby();
-                }
+                console.log("Idle timeout reached. Resetting.");
+                resetLobby();
             }, IDLE_TIMEOUT_SECONDS * 1000);
         }
 
-        // Reset timer on interactions (only if NOT in a call)
+        // Reset timer on interactions
         document.addEventListener('click', () => {
             if(document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
