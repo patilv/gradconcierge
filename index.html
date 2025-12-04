@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Graduate Business Kiosk</title>
-    
+    <title>Gonzaga Graduate Business Concierge</title>
+
     <!-- 
         CRITICAL SHIM: Prevents "Cannot assign to read only property" error.
         This allows us to use the robust 'unpkg' script on the Neat Frame without crashing.
     -->
     <script>
-        (function() {
+        (function () {
             try {
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     const originalGUM = navigator.mediaDevices.getUserMedia;
@@ -37,15 +38,18 @@
 
     <style>
         /* Reset & Core Layout */
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #041E42; /* Gonzaga Navy Blue */
+            background-color: #041E42;
+            /* Gonzaga Navy Blue */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: white;
-            overflow: hidden; /* Prevent scrolling on kiosk */
+            overflow: hidden;
+            /* Prevent scrolling on kiosk */
         }
 
         /* --- LOBBY SCREEN STYLES --- */
@@ -61,11 +65,11 @@
         }
 
         .mascot-image {
-            max-width: 80%; 
+            max-width: 80%;
             max-height: 40vh;
             margin-bottom: 30px;
             border-radius: 10px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
@@ -95,7 +99,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .agent-card:active {
@@ -122,7 +126,8 @@
 
         /* --- AGENT SCREEN STYLES --- */
         #agent-screen {
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             height: 100%;
             width: 100%;
             position: relative;
@@ -136,7 +141,8 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            z-index: 10; /* Behind contact info */
+            z-index: 10;
+            /* Behind contact info */
         }
 
         /* Ensure widget has layout properties */
@@ -158,25 +164,94 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
-        
+
+        /* Toggle Button for Contact Info */
+        .contact-toggle-btn {
+            position: absolute;
+            top: 40px;
+            right: 30px;
+            z-index: 100;
+            background: rgba(0, 47, 108, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(94, 138, 180, 0.5);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .contact-toggle-btn:active {
+            background: rgba(0, 47, 108, 1);
+        }
+
         /* Contact Info Styles */
         .contact-info {
             position: absolute;
-            top: 110px; /* Positioned below the back button */
-            left: 30px;
-            z-index: 90; /* Above widget background, below modal warnings */
+            top: 100px;
+            right: 30px;
+            /* Aligned with toggle button */
+            z-index: 90;
             color: white;
             text-align: left;
-            background: rgba(0, 47, 108, 0.7); /* Semi-transparent Royal Blue */
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(94, 138, 180, 0.3); /* River Blue border */
-            max-width: 350px; /* Widened for longer titles */
-            font-size: 0.85rem; /* Slightly smaller font to fit everyone */
-            max-height: 70vh; /* Prevent overflow on small screens */
-            overflow-y: auto; /* Scroll if absolutely necessary */
-            display: none; /* Hidden by default, toggled by JS */
+            background: rgba(0, 47, 108, 0.95);
+            /* More opaque for readability */
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(94, 138, 180, 0.5);
+            max-width: 320px;
+            width: calc(100% - 60px);
+            /* Responsive width */
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+            display: none;
+            /* Hidden by default */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform-origin: top right;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .back-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+                top: 20px;
+                left: 20px;
+            }
+
+            .contact-toggle-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                top: 20px;
+                right: 20px;
+            }
+
+            .contact-info {
+                top: 70px;
+                right: 20px;
+                left: 20px;
+                /* Full width minus margins */
+                width: auto;
+                max-width: none;
+            }
         }
 
         .contact-block {
@@ -190,7 +265,8 @@
         }
 
         .contact-info .role {
-            color: #5E8AB4; /* River Blue */
+            color: #5E8AB4;
+            /* River Blue */
             font-weight: 600;
             margin-bottom: 4px;
             display: block;
@@ -207,7 +283,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             margin: 10px 0;
         }
-        
+
         .timeout-warning {
             position: absolute;
             bottom: 100px;
@@ -224,15 +300,19 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- SCREEN 1: THE LOBBY -->
+    <center>
+        <h1><b>Gonzaga Graduate School of Business Concierge</b></h1>
+    </center>
+
     <div id="lobby-screen">
         <!-- Gonzaga Bulldog Mascot -->
-        <img src="bulldogwelcome.png" alt="Gonzaga Bulldog Mascot" class="mascot-image">
-        
-        <h1>Choose your path:</h1>
-        
+        <img src="retriever.jpg" alt="Golden Retriever" class="mascot-image">
+
+
         <div class="card-container">
             <!-- AGENT 1 -->
             <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
@@ -241,21 +321,26 @@
                     <p>Information for prospective Graduate Business Students</p>
                 </div>
             </div>
-
-            <!-- AGENT 2 (Using same ID for now) -->
+            <!-- AGENT 2 (Current Student) - HIDDEN
             <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'current')">
                 <div class="card-info">
                     <h2>Current Student</h2>
                     <p>Information for current Graduate Business Students</p>
                 </div>
-            </div>
+            </div> 
+            -->
         </div>
     </div>
 
     <!-- SCREEN 2: THE AGENT INTERFACE -->
     <div id="agent-screen">
         <button class="back-button" onclick="resetLobby()">← End Chat</button>
-        
+
+        <!-- Toggle Button -->
+        <button id="contact-toggle" class="contact-toggle-btn" onclick="toggleContactInfo()">
+            <span>ℹ️ Contact Info</span>
+        </button>
+
         <!-- Contact Block for PROSPECTIVE Students -->
         <div id="info-prospective" class="contact-info">
             <!-- Hannah -->
@@ -281,45 +366,17 @@
             <!-- Andrew -->
             <div class="contact-block">
                 <h3>Andrew Brajcich, JD, LLM, CPA</h3>
-                <span class="role">Director of Graduate Accounting Programs<br>Jud Regis Endowed Chair of Accounting</span>
+                <span class="role">Director of Graduate Accounting Programs<br>Jud Regis Endowed Chair of
+                    Accounting</span>
                 <p>Phone: (509) 313-7053</p>
                 <p>Email: brajcich@gonzaga.edu</p>
             </div>
         </div>
 
-        <!-- Contact Block for CURRENT Students -->
-        <div id="info-current" class="contact-info">
-            <!-- Claudia -->
-            <div class="contact-block">
-                <h3>Claudia Rios-Jordan</h3>
-                <span class="role">Coordinator of the MBA-AIE program<br>Graduate Academic Advisor</span>
-                <p>Phone: (509) 313-3764</p>
-                <p>Email: rios-jordan@gonzaga.edu</p>
-            </div>
 
-            <hr class="contact-divider">
 
-            <!-- Vivek -->
-            <div class="contact-block">
-                <h3>Vivek Patil, Ph.D.</h3>
-                <span class="role">Director of Graduate Business Programs<br>Professor of Marketing</span>
-                <p>Phone: (509) 313-7046</p>
-                <p>Email: patil@gonzaga.edu</p>
-            </div>
-
-            <hr class="contact-divider">
-
-            <!-- Andrew -->
-            <div class="contact-block">
-                <h3>Andrew Brajcich, JD, LLM, CPA</h3>
-                <span class="role">Director of Graduate Accounting Programs<br>Jud Regis Endowed Chair of Accounting</span>
-                <p>Phone: (509) 313-7053</p>
-                <p>Email: brajcich@gonzaga.edu</p>
-            </div>
-        </div>
-        
         <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
-        
+
         <div id="widget-container">
             <!-- Widget injected here -->
         </div>
@@ -327,11 +384,13 @@
 
     <script>
         // Kiosk Timer (Simple timeout, increased to 5 minutes)
-        const IDLE_TIMEOUT_SECONDS = 300; 
+        const IDLE_TIMEOUT_SECONDS = 300;
         let idleTimer;
-        
+        let currentMode = '';
+
         function startAgent(agentId, mode) {
             console.log("Start Agent clicked for ID:", agentId, "Mode:", mode);
+            currentMode = mode;
 
             if (agentId.includes('REPLACE_WITH')) {
                 alert("Error: Agent ID missing.");
@@ -342,15 +401,10 @@
             document.getElementById('lobby-screen').style.display = 'none';
             document.getElementById('agent-screen').style.display = 'block';
 
-            // 2. Toggle Correct Contact Info
+            // 2. Reset Contact Info State (Hidden by default)
             document.getElementById('info-prospective').style.display = 'none';
-            document.getElementById('info-current').style.display = 'none';
-
-            if (mode === 'prospective') {
-                document.getElementById('info-prospective').style.display = 'block';
-            } else if (mode === 'current') {
-                document.getElementById('info-current').style.display = 'block';
-            }
+            const infoCurrent = document.getElementById('info-current');
+            if (infoCurrent) infoCurrent.style.display = 'none';
 
             // 3. Inject Widget
             // Using document.createElement is cleaner for the unpkg script
@@ -366,6 +420,28 @@
             startIdleTimer();
         }
 
+        function toggleContactInfo() {
+            // Determine which info block to toggle based on mode
+            let targetId = '';
+            if (currentMode === 'prospective') {
+                targetId = 'info-prospective';
+            } else if (currentMode === 'current') {
+                targetId = 'info-current';
+            }
+
+            if (!targetId) return;
+
+            const el = document.getElementById(targetId);
+            if (el) {
+                if (el.style.display === 'block') {
+                    el.style.display = 'none';
+                } else {
+                    el.style.display = 'block';
+                }
+            }
+            startIdleTimer(); // Interaction resets timer
+        }
+
         function resetLobby() {
             console.log("Resetting to Lobby...");
             const container = document.getElementById('widget-container');
@@ -374,11 +450,15 @@
             document.getElementById('agent-screen').style.display = 'none';
             document.getElementById('lobby-screen').style.display = 'flex';
             document.getElementById('timeout-msg').style.display = 'none';
-            
-            // Hide contact info blocks on reset
-            document.getElementById('info-prospective').style.display = 'none';
-            document.getElementById('info-current').style.display = 'none';
 
+            // Hide contact info blocks on reset
+            const infoProspective = document.getElementById('info-prospective');
+            const infoCurrent = document.getElementById('info-current');
+
+            if (infoProspective) infoProspective.style.display = 'none';
+            if (infoCurrent) infoCurrent.style.display = 'none';
+
+            currentMode = '';
             clearTimeout(idleTimer);
         }
 
@@ -395,16 +475,17 @@
 
         // Reset timer on interactions
         document.addEventListener('click', () => {
-            if(document.getElementById('agent-screen').style.display === 'block') {
+            if (document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
             }
         });
 
         document.addEventListener('touchstart', () => {
-            if(document.getElementById('agent-screen').style.display === 'block') {
+            if (document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
             }
         });
     </script>
 </body>
+
 </html>
