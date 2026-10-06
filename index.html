@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonzaga Graduate Business Concierge</title>
 
     <script>
@@ -249,6 +249,22 @@
             margin: 10px 0;
         }
 
+        .pathways-link {
+            display: block;
+            text-align: center;
+            color: #ffffff;
+            border: 1px solid #5E8AB4;
+            border-radius: 50px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .pathways-link:hover,
+        .pathways-link:focus-visible {
+            background: rgba(94, 138, 180, 0.25);
+        }
+
         .timeout-warning {
             position: absolute;
             bottom: 100px;
@@ -286,6 +302,7 @@
                     <p>Ask about MBA & MSBA Programs</p>
                 </div>
             </div>
+            <a class="pathways-link" href="pathways/">See how your major connects to the MBA &rarr;</a>
         </div>
     </div>
 
@@ -298,10 +315,19 @@
 
         <div id="info-prospective" class="contact-info">
             <div class="contact-block">
-                <h3>Hannah Johanson</h3>
+                <h3>Trevor Heilman</h3>
                 <span class="role">Admissions Specialist</span>
-                <p>Call or Text: (509) 313-7047</p>
-                <p>Email: johansonh@gonzaga.edu</p>
+                <p>Phone: (509) 313-6227</p>
+                <p>Email: heilman@gonzaga.edu</p>
+            </div>
+
+            <hr class="contact-divider">
+
+            <div class="contact-block">
+                <h3>Graduate Admissions</h3>
+                <span class="role">Gonzaga University</span>
+                <p>Call or Text: (866) 380-5323</p>
+                <p>Email: gradadmissions@gonzaga.edu</p>
             </div>
 
             <hr class="contact-divider">
@@ -336,6 +362,17 @@
         let idleTimer;
         let currentMode = '';
 
+        // Reads ?major=Nursing (sent by the pathways page) and passes it to the agent as the major variable.
+        function getMajorFromUrl() {
+            try {
+                const raw = new URLSearchParams(window.location.search).get('major') || '';
+                const clean = raw.replace(/[^A-Za-z ,'\u2019-]/g, '').trim().slice(0, 60);
+                return clean || 'none';
+            } catch (e) {
+                return 'none';
+            }
+        }
+
         function startAgent(agentId, mode) {
             console.log("Start Agent clicked for ID:", agentId, "Mode:", mode);
             currentMode = mode;
@@ -359,6 +396,7 @@
 
             const widget = document.createElement('elevenlabs-convai');
             widget.setAttribute('agent-id', agentId);
+            widget.setAttribute('dynamic-variables', JSON.stringify({ major: getMajorFromUrl() }));
             container.appendChild(widget);
 
             // 4. Start the initial timer
