@@ -223,7 +223,7 @@ function renderDetail(key){
      '</div></section>'+
    '</div>'+
    (m.why?'<p class="why">'+esc(m.why)+'</p>':'')+
-   '<div class="cta"><div class="box primary"><h5>Ask the Grad Concierge.</h5><p>Talk through your major and goals with Gonzaga’s voice assistant for graduate business programs. It takes about five minutes.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
+   '<div class="cta"><div class="box primary"><h5>Ask the Gonzaga MBA Concierge.</h5><p>Talk through your major and goals with Gonzaga’s voice assistant for the MBA. It takes about five minutes.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
    '<div class="box contact"><h5 style="color:var(--ink)">Talk to a person.</h5><div><b>Trevor Heilman</b>, Admissions Specialist<br>(509) 313-6227 · heilman@gonzaga.edu</div><div><b>Vivek Patil, Ph.D.</b>, Director of Graduate Business Programs<br>(509) 313-7046 · patil@gonzaga.edu</div></div></div>';
   document.getElementById('mobilePick').value = m.key;
   document.querySelectorAll('.majors button').forEach(b=>b.setAttribute('aria-current', b.dataset.k===m.key?'true':'false'));
