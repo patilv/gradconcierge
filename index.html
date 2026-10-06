@@ -299,7 +299,7 @@
             <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
                 <div class="card-info">
                     <h2>Tap to Speak</h2>
-                    <p>Ask about MBA & MSBA Programs</p>
+                    <p id="card-subtitle">For current Gonzaga students: see how your major connects to the Accelerated MBA and MSBA</p>
                 </div>
             </div>
             <a class="pathways-link" href="pathways/">See how your major connects to the MBA &rarr;</a>
@@ -316,9 +316,18 @@
         <div id="info-prospective" class="contact-info">
             <div class="contact-block">
                 <h3>Trevor Heilman</h3>
-                <span class="role">Admissions Specialist</span>
+                <span class="role">Admissions Specialist<br>MBA and MSBA Business Administration Track</span>
                 <p>Phone: (509) 313-6227</p>
                 <p>Email: heilman@gonzaga.edu</p>
+            </div>
+
+            <hr class="contact-divider">
+
+            <div class="contact-block">
+                <h3>Callisto Aotsuki</h3>
+                <span class="role">Admissions Specialist<br>MSBA Accounting Track</span>
+                <p>Phone: (509) 313-4325</p>
+                <p>Email: aotsuki@gonzaga.edu</p>
             </div>
 
             <hr class="contact-divider">
@@ -373,6 +382,14 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const major = getMajorFromUrl();
+            if (major !== 'none') {
+                document.getElementById('card-subtitle').textContent =
+                    'Ask how your ' + major + ' major connects to the Accelerated MBA and MSBA';
+            }
+        });
+
         function startAgent(agentId, mode) {
             console.log("Start Agent clicked for ID:", agentId, "Mode:", mode);
             currentMode = mode;
@@ -396,7 +413,11 @@
 
             const widget = document.createElement('elevenlabs-convai');
             widget.setAttribute('agent-id', agentId);
-            widget.setAttribute('dynamic-variables', JSON.stringify({ major: getMajorFromUrl() }));
+            const major = getMajorFromUrl();
+            const openingQuestion = (major === 'none')
+                ? "What's your major, and what kind of work are you hoping to do after Gonzaga?"
+                : "I see you're studying " + major + ". What kind of work are you hoping to do after Gonzaga?";
+            widget.setAttribute('dynamic-variables', JSON.stringify({ major: major, opening_question: openingQuestion }));
             container.appendChild(widget);
 
             // 4. Start the initial timer
