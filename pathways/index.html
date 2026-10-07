@@ -128,7 +128,7 @@ footer p{max-width:90ch;margin:0 0 8px}
 <body>
 <header class="band">
   <div class="wrap">
-    <p class="wordmark">Gonzaga University <span>&middot;</span> School of Business Administration</p>
+    <p class="wordmark">Gonzaga School of Business Administration <span>&middot;</span> Pilot</p>
     <h1>Your major, amplified by the MBA.</h1>
     <p class="lede">Pick your major to see what you already bring, what the Gonzaga MBA adds, and the roles the combination can open. Business majors are included. Through the Accelerated MBA, you can start graduate courses in your senior year.</p>
     <div class="facts" role="list">
@@ -171,7 +171,7 @@ footer p{max-width:90ch;margin:0 0 8px}
     <p class="pilot">A Gonzaga School of Business Administration pilot. Official program information is on the <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba" target="_blank" rel="noopener">Gonzaga MBA website</a>.</p>
     <p>Official pages: <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba" target="_blank" rel="noopener">MBA</a> · <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/accelerated-mba" target="_blank" rel="noopener">Accelerated MBA</a> · <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/how-to-apply" target="_blank" rel="noopener">How to Apply</a> · <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/tuition-and-financing" target="_blank" rel="noopener">Tuition and Financing</a></p>
     <p>Career paths show roles that a major and an MBA together can prepare you to pursue over a career, from early-career to senior positions. Individual outcomes vary.</p>
-    <p>Core course titles reflect the current MBA curriculum and may change with the program revision under review. Elective areas reflect the courses on recent and upcoming schedules. Specific electives run when enrollment supports them, so the courses within an area change from term to term. Confirm eligibility, tuition, and course availability with Graduate Admissions.</p>
+    <p>Core course titles reflect the current MBA curriculum. Elective areas reflect the courses on recent and upcoming schedules. Specific electives run when enrollment supports them, so the courses within an area change from term to term. Confirm eligibility, tuition, and course availability with Graduate Admissions.</p>
   </div>
 </footer>
 <script>
@@ -229,7 +229,7 @@ function renderDetail(key){
    '</div>'+
    (m.why?'<p class="why">'+esc(m.why)+'</p>':'')+
    (m.note?'<p class="why note">'+esc(m.note)+'</p>':'')+
-   '<div class="cta"><div class="box primary"><h5>Ask the Gonzaga MBA Concierge.</h5><p>Talk through your major and goals with Gonzaga’s voice assistant for the MBA. It takes about five minutes.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
+   '<div class="cta"><div class="box primary"><h5>Ask the Gonzaga MBA Concierge.</h5><p>An AI voice assistant piloted by Gonzaga’s School of Business Administration. Talk through your major and goals in about five minutes. It is a pilot, not an official Gonzaga University service.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
    '<div class="box contact"><h5 style="color:var(--ink)">Talk to a person.</h5><div><b>Trevor Heilman</b>, Admissions Specialist<br>(509) 313-6227 · heilman@gonzaga.edu</div><div><b>Vivek Patil, Ph.D.</b>, Director of Graduate Business Programs<br>(509) 313-7046 · patil@gonzaga.edu</div>'+(m.key==='biz-accounting'?'<div><b>Andrew Brajcich, JD, LLM, CPA</b>, Director of Graduate Accounting Programs<br>(509) 313-7053 · brajcich@gonzaga.edu</div>':'')+'</div></div>';
   document.getElementById('mobilePick').value = m.key;
   document.querySelectorAll('.majors button').forEach(b=>b.setAttribute('aria-current', b.dataset.k===m.key?'true':'false'));
