@@ -229,7 +229,7 @@ function renderDetail(key){
    '</div>'+
    (m.why?'<p class="why">'+esc(m.why)+'</p>':'')+
    (m.note?'<p class="why note">'+esc(m.note)+'</p>':'')+
-   '<div class="cta"><div class="box primary"><h5>Ask the Gonzaga MBA Concierge.</h5><p>An AI voice assistant in a pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs. Talk through your major and goals in about five minutes. It is a pilot, not an official Gonzaga University service.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
+   '<div class="cta"><div class="box primary"><h5>Ask the MBA Concierge.</h5><p>An AI voice assistant in a pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs. Talk through your major and goals in about five minutes. It is a pilot, not an official Gonzaga University service.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
    '<div class="box contact"><h5 style="color:var(--ink)">Talk to a person.</h5><div><b>Trevor Heilman</b>, Admissions Specialist<br>(509) 313-6227 · heilman@gonzaga.edu</div><div><b>Vivek Patil, Ph.D.</b>, Director of Graduate Business Programs<br>(509) 313-7046 · patil@gonzaga.edu</div>'+(m.key==='biz-accounting'?'<div><b>Andrew Brajcich, JD, LLM, CPA</b>, Director of Graduate Accounting Programs<br>(509) 313-7053 · brajcich@gonzaga.edu</div>':'')+'</div></div>';
   document.getElementById('mobilePick').value = m.key;
   document.querySelectorAll('.majors button').forEach(b=>b.setAttribute('aria-current', b.dataset.k===m.key?'true':'false'));
