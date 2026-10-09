@@ -13,7 +13,7 @@
 :root{
   --gu-blue:#06274F; --river:#5E8AB4; --river-30:#CEDBE8; --wheat-30:#F5EFE0; --sunflower:#F1A12C; --trout:#5E788D;
   --bg:#F7F8FA; --surface:#FFFFFF; --ink:#13213A; --muted:#4F5D70; --line:#DCE2EA; --chip:#EEF3F8; --chip-strong:#06274F; --chip-strong-ink:#FFFFFF;
-  --accent:#06274F; --link:#5E788D; --dot:#06274F; --dot-off:#D3DAE3; --band:#06274F; --band-ink:#FFFFFF; --band-muted:#CEDBE8;
+  --accent:#06274F; --link:#52697C; --dot:#06274F; --dot-off:#D3DAE3; --band:#06274F; --band-ink:#FFFFFF; --band-muted:#CEDBE8;
   --serif:"Frank Ruhl Libre", Georgia, "Times New Roman", serif;
   --sans:"Figtree", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
   color-scheme:light;
@@ -39,29 +39,31 @@ header p.lede{color:var(--band-muted);max-width:62ch;margin:0;font-size:17px}
 .fact{background:var(--band);padding:14px 16px;min-width:0}
 .fact b{display:block;font:700 22px/1.2 var(--sans);font-variant-numeric:tabular-nums;color:#fff}
 .fact span{color:var(--band-muted);font-size:14px}
-nav.tabs{display:flex;gap:4px;margin-top:24px;border-bottom:1px solid var(--line)}
-nav.tabs button{font:600 15px var(--sans);background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:12px 14px;cursor:pointer}
-nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sunflower)}
-nav.tabs button:focus-visible,.majors button:focus-visible,.cta a:focus-visible,#q:focus-visible,.map tbody tr:focus-visible{outline:3px solid var(--sunflower);outline-offset:2px}
+.tabs{display:flex;gap:4px;margin:0 0 24px;border-bottom:1px solid var(--line)}
+.tabs button{font:600 15px var(--sans);background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:12px 14px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sunflower)}
+.tabs button:focus-visible,.majors button:focus-visible,.cta a:focus-visible,#q:focus-visible,.map .rowbtn:focus-visible,#mobilePick:focus-visible,footer a:focus-visible{outline:3px solid var(--sunflower);outline-offset:2px}
 main{padding-block:24px 48px}
 .explore{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
 .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px}
 .side label{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 #q{width:100%;margin:6px 0 10px;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:15px var(--sans)}
-.majors h3{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+.majors h2{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
 .majors ul{list-style:none;margin:0;padding:0}
 .majors button{width:100%;text-align:left;background:none;border:0;padding:6px 8px;border-radius:4px;color:var(--ink);font:15px var(--sans);cursor:pointer}
 .majors button:hover{background:var(--chip)}
 .majors button[aria-current="true"]{background:var(--chip-strong);color:var(--chip-strong-ink);font-weight:600}
 select#mobilePick{display:none}
 .detail{min-width:0}
+.detail h2:focus{outline:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .detail h2{font:700 clamp(26px,3.6vw,36px)/1.15 var(--serif);margin:0 0 4px;text-wrap:balance}
 .detail .fam{color:var(--muted);font-size:14px;margin:0 0 20px}
 .flow{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1.25fr) 28px minmax(0,1fr);align-items:stretch}
 .stage{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;min-width:0}
 .stage.mid{border-color:var(--accent);border-width:2px}
-.stage h4{font:600 12px var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-.stage h4 .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--chip-strong);color:var(--chip-strong-ink);font-size:11px;margin-right:6px;letter-spacing:0}
+.stage h3{font:600 12px var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.stage h3 .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--chip-strong);color:var(--chip-strong-ink);font-size:11px;margin-right:6px;letter-spacing:0}
 .arrow{display:grid;place-items:center;color:var(--river);font:700 22px var(--sans)}
 .adds{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .cores{display:grid;gap:10px}
@@ -88,7 +90,7 @@ select#mobilePick{display:none}
 .cta .primary{background:var(--band);color:var(--band-ink);border-color:var(--band)}
 .cta .primary p{color:var(--band-muted);margin:6px 0 14px}
 .cta .primary a{display:inline-block;background:var(--sunflower);color:#06274F;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:4px}
-.cta h5{font:700 18px var(--serif);margin:0}
+.cta h3{font:700 18px var(--serif);margin:0}
 .contact{font-size:14px;color:var(--muted)}
 .contact b{color:var(--ink);font-weight:600}
 .contact div+div{margin-top:8px}
@@ -99,7 +101,9 @@ table.map{border-collapse:collapse;width:100%;min-width:1240px;font-size:14px}
 .map th,.map td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
 .map thead th{font:600 12px/1.25 var(--sans);color:var(--muted);vertical-align:bottom;background:var(--surface);position:sticky;top:0}
 .map th.row,.map td.row{text-align:left}
-.map td.row{font-weight:600;white-space:nowrap}
+.map tbody th.row{font-weight:600;white-space:nowrap}
+.rowbtn{all:unset;cursor:pointer;font:inherit;color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.map tbody tr.m:hover th{background:var(--chip)}
 .map tr.fam td{background:var(--chip);font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left}
 .map tbody tr.m{cursor:pointer}
 .map tbody tr.m:hover td{background:var(--chip)}
@@ -139,13 +143,11 @@ footer p{max-width:90ch;margin:0 0 8px}
     </div>
   </div>
 </header>
-<div class="wrap">
-  <nav class="tabs" role="tablist" aria-label="Views">
-    <button role="tab" id="tab-explore" aria-controls="view-explore" aria-selected="true">Explore by major</button>
-    <button role="tab" id="tab-map" aria-controls="view-map" aria-selected="false">See the full map</button>
-  </nav>
-</div>
 <main class="wrap">
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button type="button" role="tab" id="tab-explore" aria-controls="view-explore" aria-selected="true" tabindex="0">Explore by major</button>
+    <button type="button" role="tab" id="tab-map" aria-controls="view-map" aria-selected="false" tabindex="-1">See the full map</button>
+  </div>
   <section id="view-explore" role="tabpanel" aria-labelledby="tab-explore">
     <div class="explore">
       <aside class="side">
@@ -156,13 +158,14 @@ footer p{max-width:90ch;margin:0 0 8px}
       <div>
         <label for="mobilePick" class="sr" hidden>Choose your major</label>
         <select id="mobilePick" aria-label="Choose your major"></select>
-        <article class="detail" id="detail" aria-live="polite"></article>
+        <article class="detail" id="detail" aria-labelledby="detail-title"></article>
+        <p id="announce" class="sr-only" role="status"></p>
       </div>
     </div>
   </section>
   <section id="view-map" role="tabpanel" aria-labelledby="tab-map" hidden>
     <p class="mapintro">Each row is a Gonzaga major. Every MBA student takes all eleven core courses. The dots show which core courses connect most to the career paths for that major, and the last column names the elective areas that fit best. Select a row to open that major.</p>
-    <div class="legend"><span><span class="dots"><i>●●●</i></span> strongest connection</span><span><span class="dots"><i>●●</i><i class="off">●</i></span> strong</span><span><span class="dots"><i>●</i><i class="off">●●</i></span> some</span></div>
+    <div class="legend"><span><span class="dots" aria-hidden="true"><i>●●●</i></span> strongest connection</span><span><span class="dots" aria-hidden="true"><i>●●</i><i class="off">●</i></span> strong</span><span><span class="dots" aria-hidden="true"><i>●</i><i class="off">●●</i></span> some</span></div>
     <div class="scroll"><table class="map" id="map"></table></div>
   </section>
 </main>
@@ -189,7 +192,7 @@ function ranks(m){ // 3 = top three, 2 = next three, 1 = any other mention, 0 = 
   sorted.forEach((k,i)=>{ r[k] = i<3?3:(i<6?2:1); });
   return r;
 }
-function dots(n){ return '<span class="dots" aria-label="'+["no","some","strong","strongest"][n]+' connection">'+'<i>'+'●'.repeat(n)+'</i><i class="off">'+'●'.repeat(3-n)+'</i></span>'; }
+function dots(n){ return '<span class="dots" role="img" aria-label="'+["no","some","strong","strongest"][n]+' connection">'+'<i>'+'●'.repeat(n)+'</i><i class="off">'+'●'.repeat(3-n)+'</i></span>'; }
 
 function renderList(filter=""){
   const f = filter.trim().toLowerCase();
@@ -197,7 +200,7 @@ function renderList(filter=""){
   document.getElementById('majorList').innerHTML = families.map(fam=>{
     const ms = DATA.majors.filter(m=>m.family===fam && (!f || m.name.toLowerCase().includes(f)));
     if(!ms.length) return "";
-    return '<h3>'+esc(fam)+'</h3><ul>'+ms.map(m=>'<li><button data-k="'+m.key+'"'+(m.key===cur?' aria-current="true"':'')+'>'+esc(m.name)+'</button></li>').join("")+'</ul>';
+    return '<h2>'+esc(fam)+'</h2><ul>'+ms.map(m=>'<li><button data-k="'+m.key+'"'+(m.key===cur?' aria-current="true"':'')+'>'+esc(m.name)+'</button></li>').join("")+'</ul>';
   }).join("") || '<p class="contact">No major matches that search. Try a shorter word.</p>';
 }
 function renderSelect(){
@@ -212,25 +215,25 @@ function renderDetail(key){
   const restChips = rest.map(c=>'<span class="chip">'+esc(c.name)+'</span>').join("");
   const els = m.electives.map(k=>elec[k]).filter(Boolean).map(e=>'<div><b>'+esc(e.name)+'</b><small>'+esc(e.desc)+'</small></div>').join("");
   document.getElementById('detail').innerHTML =
-   '<h2>'+esc(m.name)+' + MBA</h2><p class="fam">'+esc(m.family)+'</p>'+
+   '<h2 id="detail-title" tabindex="-1">'+esc(m.name)+' + MBA</h2><p class="fam">'+esc(m.family)+'</p>'+
    '<div class="flow">'+
-     '<section class="stage"><h4><span class="n">1</span>What you bring</h4><p style="margin:0">'+esc(m.bring)+'</p></section>'+
+     '<section class="stage"><h3><span class="n">1</span>What you bring</h3><p style="margin:0">'+esc(m.bring)+'</p></section>'+
      '<div class="arrow" aria-hidden="true">→</div>'+
-     '<section class="stage mid"><h4><span class="n">2</span>What the MBA adds</h4>'+
+     '<section class="stage mid"><h3><span class="n">2</span>What the MBA adds</h3>'+
        '<p class="sub" style="margin-top:0">'+(m.biz?'Core courses most tied to the careers below, taken at graduate depth':'Core courses that build most on your major')+'</p><div class="cores">'+coreCards+'</div>'+
        '<p class="sub">The rest of the core, which every MBA student takes</p><div class="chips">'+restChips+'</div>'+
        (els?'<p class="sub">Elective areas to explore</p><div class="elec">'+els+'</div>':'')+
        '<p class="sub">Skills the combination builds</p><ul class="adds">'+m.adds.map(a=>'<li><b>'+esc(a.skill)+'</b><span>'+esc(a.detail)+'</span></li>').join("")+'</ul>'+
      '</section>'+
      '<div class="arrow" aria-hidden="true">→</div>'+
-     '<section class="stage"><h4><span class="n">3</span>Where it can lead</h4><div class="paths">'+
+     '<section class="stage"><h3><span class="n">3</span>Where it can lead</h3><div class="paths">'+
        m.paths.map(p=>'<div><b>'+esc(p.group)+'</b><ul>'+p.roles.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul></div>').join("")+
      '</div></section>'+
    '</div>'+
    (m.why?'<p class="why">'+esc(m.why)+'</p>':'')+
    (m.note?'<p class="why note">'+esc(m.note)+'</p>':'')+
-   '<div class="cta"><div class="box primary"><h5>Ask the MBA Concierge.</h5><p>An AI voice assistant in a pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs. Talk through your major and goals in about five minutes. It is a pilot, not an official Gonzaga University service.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
-   '<div class="box contact"><h5 style="color:var(--ink)">Talk to a person.</h5><div><b>Trevor Heilman</b>, Admissions Specialist<br>(509) 313-6227 · heilman@gonzaga.edu</div><div><b>Vivek Patil, Ph.D.</b>, Director of Graduate Business Programs<br>(509) 313-7046 · patil@gonzaga.edu</div>'+(m.key==='biz-accounting'?'<div><b>Andrew Brajcich, JD, LLM, CPA</b>, Director of Graduate Accounting Programs<br>(509) 313-7053 · brajcich@gonzaga.edu</div>':'')+'</div></div>';
+   '<div class="cta"><div class="box primary"><h3>Ask the MBA Concierge.</h3><p>An AI voice assistant in a pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs. Talk through your major and goals in about five minutes. It is a pilot, not an official Gonzaga University service.</p><a href="'+CONCIERGE+'?major='+encodeURIComponent(m.ask||m.name)+'" target="_blank" rel="noopener">Start a conversation</a></div>'+
+   '<div class="box contact"><h3 style="color:var(--ink)">Talk to a person.</h3><div><b>Trevor Heilman</b>, Admissions Specialist<br>(509) 313-6227 · heilman@gonzaga.edu</div><div><b>Vivek Patil, Ph.D.</b>, Director of Graduate Business Programs<br>(509) 313-7046 · patil@gonzaga.edu</div>'+(m.key==='biz-accounting'?'<div><b>Andrew Brajcich, JD, LLM, CPA</b>, Director of Graduate Accounting Programs<br>(509) 313-7053 · brajcich@gonzaga.edu</div>':'')+'</div></div>';
   document.getElementById('mobilePick').value = m.key;
   document.querySelectorAll('.majors button').forEach(b=>b.setAttribute('aria-current', b.dataset.k===m.key?'true':'false'));
 }
@@ -238,7 +241,7 @@ function renderMap(){
   const head = '<thead><tr><th class="row" scope="col">Major</th>'+DATA.core.map(c=>'<th scope="col">'+esc(c.name)+'</th>').join("")+'<th class="row" scope="col">Elective areas that fit</th></tr></thead>';
   const body = families.map(fam=>'<tr class="fam"><td colspan="'+(DATA.core.length+2)+'">'+esc(fam)+'</td></tr>'+
     DATA.majors.filter(m=>m.family===fam).map(m=>{ const r=ranks(m);
-      return '<tr class="m" tabindex="0" data-k="'+m.key+'"><td class="row">'+esc(m.name)+'</td>'+DATA.core.map(c=>'<td>'+dots(r[c.key])+'</td>').join("")+'<td class="el">'+m.electives.map(k=>'<span class="chip">'+esc(elec[k].short)+'</span>').join(" ")+'</td></tr>'; }).join("")).join("");
+      return '<tr class="m" data-k="'+m.key+'"><th class="row" scope="row"><button type="button" class="rowbtn">'+esc(m.name)+'</button></th>'+DATA.core.map(c=>'<td>'+dots(r[c.key])+'</td>').join("")+'<td class="el">'+m.electives.map(k=>'<span class="chip">'+esc(elec[k].short)+'</span>').join(" ")+'</td></tr>'; }).join("")).join("");
   document.getElementById('map').innerHTML = head+'<tbody>'+body+'</tbody>';
 }
 function showTab(which){
@@ -247,19 +250,34 @@ function showTab(which){
   document.getElementById('view-map').hidden = ex;
   document.getElementById('tab-explore').setAttribute('aria-selected', ex);
   document.getElementById('tab-map').setAttribute('aria-selected', !ex);
+  document.getElementById('tab-explore').tabIndex = ex ? 0 : -1;
+  document.getElementById('tab-map').tabIndex = ex ? -1 : 0;
 }
+let focusDetail = null; // set by a user pick, so focus never moves on first load
 function route(){
   const h = location.hash.slice(1);
   if(h==="map"){ showTab("map"); return; }
   showTab("explore"); renderDetail(byKey[h]?h:DATA.majors[0].key);
+  if(focusDetail){
+    const t = document.getElementById('detail-title');
+    document.getElementById('announce').textContent = 'Showing ' + t.textContent;
+    if(focusDetail!=="announce") t.focus({preventScroll: focusDetail==="list"});
+    focusDetail = null;
+  }
 }
 document.getElementById('tab-explore').onclick = ()=>{ const cur=document.getElementById('mobilePick').value; location.hash = cur||DATA.majors[0].key; };
 document.getElementById('tab-map').onclick = ()=>{ location.hash = "map"; };
-document.getElementById('majorList').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b){ location.hash=b.dataset.k; window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'}); }});
-document.getElementById('mobilePick').addEventListener('change', e=>{ location.hash=e.target.value; });
+document.getElementById('majorList').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b){ focusDetail='list'; location.hash=b.dataset.k; window.scrollTo({top:document.querySelector('.tabs').offsetTop,behavior:'smooth'}); }});
+document.getElementById('mobilePick').addEventListener('change', e=>{ focusDetail='announce'; location.hash=e.target.value; });
 document.getElementById('q').addEventListener('input', e=>renderList(e.target.value));
-document.getElementById('map').addEventListener('click', e=>{ const tr=e.target.closest('tr.m'); if(tr) location.hash=tr.dataset.k; });
-document.getElementById('map').addEventListener('keydown', e=>{ const tr=e.target.closest('tr.m'); if(tr && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); location.hash=tr.dataset.k; }});
+document.getElementById('map').addEventListener('click', e=>{ const tr=e.target.closest('tr.m'); if(tr){ focusDetail='map'; location.hash=tr.dataset.k; } });
+document.querySelector('.tabs').addEventListener('keydown', e=>{
+  if(!["ArrowLeft","ArrowRight","Home","End"].includes(e.key)) return;
+  e.preventDefault();
+  const toMap = e.key==="End" || (e.key!=="Home" && document.activeElement.id==="tab-explore");
+  document.getElementById(toMap?'tab-map':'tab-explore').click();
+  document.getElementById(toMap?'tab-map':'tab-explore').focus();
+});
 window.addEventListener('hashchange', route);
 renderList(); renderSelect(); renderMap(); route();
 </script>
