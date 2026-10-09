@@ -91,6 +91,10 @@
         }
 
         .agent-card {
+            width: 100%;
+            font: inherit;
+            color: inherit;
+            text-align: center;
             background: linear-gradient(145deg, #002F6C, #041E42);
             border: 1px solid #5E8AB4;
             border-radius: 20px;
@@ -114,14 +118,16 @@
             text-align: center;
         }
 
-        .card-info h2 {
+        .card-info .card-title {
+            display: block;
             margin: 0;
             font-size: 1.6rem;
             color: #ffffff;
             font-weight: 600;
         }
 
-        .card-info p {
+        .card-info .card-sub {
+            display: block;
             margin: 5px 0 0 0;
             color: #C5B358;
             /* Gonzaga Gold text for the subtitle */
@@ -316,30 +322,75 @@
             line-height: 1.4;
             color: #c9d3e0;
         }
+        .lobby-header {
+            text-align: center;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .agent-card:focus-visible,
+        .back-button:focus-visible,
+        .contact-toggle-btn:focus-visible,
+        .pathways-link:focus-visible,
+        .pilot-note a:focus-visible,
+        .contact-info a:focus-visible {
+            outline: 3px solid #C5B358;
+            outline-offset: 3px;
+        }
+
+        #agent-title:focus {
+            outline: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .agent-card,
+            .contact-toggle-btn {
+                transition: none;
+            }
+
+            .agent-card:active {
+                transform: none;
+            }
+
+            .contact-info {
+                animation: none;
+            }
+        }
     </style>
 </head>
 
 <body>
-
+<main>
     <div id="lobby-screen">
 
-        <center>
+        <div class="lobby-header">
             <h1>MBA Concierge</h1>
             <p class="pilot-tag">A pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs</p>
             <h2>I'm the voice of the <span style="color: #C5B358; font-weight: bold;">Jepson Center</span>.
                 <br>Ask me how your major connects to the Gonzaga MBA.
             </h2>
-        </center>
+        </div>
 
         <img src="jepson-silhouette.png" alt="Jepson Center Silhouette" class="mascot-image">
 
         <div class="card-container">
-            <div class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
-                <div class="card-info">
-                    <h2>Tap to Speak</h2>
-                    <p id="card-subtitle">For current Gonzaga students: see how your major connects to the Accelerated MBA</p>
-                </div>
-            </div>
+            <button type="button" class="agent-card" aria-labelledby="card-title" aria-describedby="card-subtitle"
+                onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
+                <span class="card-info">
+                    <span class="card-title" id="card-title">Tap to Speak</span>
+                    <span class="card-sub" id="card-subtitle">For current Gonzaga students: see how your major connects to the Accelerated MBA</span>
+                </span>
+            </button>
             <a class="pathways-link" href="pathways/">See how your major connects to the MBA &rarr;</a>
         </div>
 
@@ -352,13 +403,15 @@
     </div>
 
     <div id="agent-screen">
-        <button class="back-button" onclick="resetLobby()">← End Chat</button>
+        <h2 id="agent-title" class="sr-only" tabindex="-1">Conversation with the MBA Concierge</h2>
+        <button type="button" class="back-button" onclick="resetLobby()"><span aria-hidden="true">← </span>End Chat</button>
 
-        <button id="contact-toggle" class="contact-toggle-btn" onclick="toggleContactInfo()">
-            <span>ℹ️ Contact Info</span>
+        <button type="button" id="contact-toggle" class="contact-toggle-btn" onclick="toggleContactInfo()"
+            aria-expanded="false" aria-controls="info-prospective">
+            <span aria-hidden="true">ℹ️</span> <span>Contact Info</span>
         </button>
 
-        <div id="info-prospective" class="contact-info">
+        <div id="info-prospective" class="contact-info" role="region" aria-label="Contact information">
             <div class="contact-block">
                 <h3>Trevor Heilman</h3>
                 <span class="role">Admissions Specialist<br>MBA and MSBA Business Administration Track</span>
@@ -411,11 +464,12 @@
             </div>
         </div>
 
-        <div class="timeout-warning" id="timeout-msg">Closing in 10s...</div>
+        <div class="timeout-warning" id="timeout-msg" role="status">Closing in 10s...</div>
 
         <div id="widget-container">
         </div>
     </div>
+</main>
 
     <script>
         // Kiosk Timer (Simple timeout, set to 5 minutes)
@@ -472,7 +526,11 @@
             widget.setAttribute('dynamic-variables', JSON.stringify({ major: major, opening_question: openingQuestion }));
             container.appendChild(widget);
 
-            // 4. Start the initial timer
+            // 4. Move keyboard and screen reader focus to the conversation screen
+            document.getElementById('contact-toggle').setAttribute('aria-expanded', 'false');
+            document.getElementById('agent-title').focus();
+
+            // 5. Start the initial timer
             startIdleTimer();
         }
 
@@ -489,11 +547,9 @@
 
             const el = document.getElementById(targetId);
             if (el) {
-                if (el.style.display === 'block') {
-                    el.style.display = 'none';
-                } else {
-                    el.style.display = 'block';
-                }
+                const open = el.style.display !== 'block';
+                el.style.display = open ? 'block' : 'none';
+                document.getElementById('contact-toggle').setAttribute('aria-expanded', String(open));
             }
             startIdleTimer(); // Interaction resets timer
         }
@@ -511,8 +567,13 @@
             const infoProspective = document.getElementById('info-prospective');
             if (infoProspective) infoProspective.style.display = 'none';
 
+            document.getElementById('contact-toggle').setAttribute('aria-expanded', 'false');
+
             currentMode = '';
             clearTimeout(idleTimer);
+
+            // Return focus to the start button
+            document.querySelector('.agent-card').focus();
         }
 
         function startIdleTimer() {
@@ -528,6 +589,12 @@
 
         // Reset timer on interactions
         document.addEventListener('click', () => {
+            if (document.getElementById('agent-screen').style.display === 'block') {
+                startIdleTimer();
+            }
+        });
+
+        document.addEventListener('keydown', () => {
             if (document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
             }
