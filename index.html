@@ -91,10 +91,6 @@
         }
 
         .agent-card {
-            width: 100%;
-            font: inherit;
-            color: inherit;
-            text-align: center;
             background: linear-gradient(145deg, #002F6C, #041E42);
             border: 1px solid #5E8AB4;
             border-radius: 20px;
@@ -116,6 +112,28 @@
 
         .card-info {
             text-align: center;
+        }
+
+        .lede {
+            font-size: 1.3rem;
+            font-weight: 300;
+            line-height: 1.5;
+            color: #d0d0d0;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .agent-card {
+            font: inherit;
+            color: inherit;
+            width: 100%;
+            text-align: center;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #C5B358;
+            outline-offset: 3px;
         }
 
         .card-info .card-title {
@@ -322,72 +340,28 @@
             line-height: 1.4;
             color: #c9d3e0;
         }
-        .lobby-header {
-            text-align: center;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .agent-card:focus-visible,
-        .back-button:focus-visible,
-        .contact-toggle-btn:focus-visible,
-        .pathways-link:focus-visible,
-        .pilot-note a:focus-visible,
-        .contact-info a:focus-visible {
-            outline: 3px solid #C5B358;
-            outline-offset: 3px;
-        }
-
-        #agent-title:focus {
-            outline: none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .agent-card,
-            .contact-toggle-btn {
-                transition: none;
-            }
-
-            .agent-card:active {
-                transform: none;
-            }
-
-            .contact-info {
-                animation: none;
-            }
-        }
     </style>
 </head>
 
 <body>
 <main>
+
     <div id="lobby-screen">
 
-        <div class="lobby-header">
+        <div style="text-align: center">
             <h1>MBA Concierge</h1>
             <p class="pilot-tag">A pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs</p>
-            <h2>I'm the voice of the <span style="color: #C5B358; font-weight: bold;">Jepson Center</span>.
+            <p class="lede">I'm the voice of the <span style="color: #C5B358; font-weight: bold;">Jepson Center</span>.
                 <br>Ask me how your major connects to the Gonzaga MBA.
-            </h2>
+            </p>
         </div>
 
-        <img src="jepson-silhouette.png" alt="Jepson Center Silhouette" class="mascot-image">
+        <img src="jepson-silhouette.png" alt="Illustration of the Jepson Center" class="mascot-image">
 
         <div class="card-container">
-            <button type="button" class="agent-card" aria-labelledby="card-title" aria-describedby="card-subtitle"
-                onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
+            <button type="button" class="agent-card" onclick="startAgent('agent_6901ka6nwcscez3a3z98kvg6mxbg', 'prospective')">
                 <span class="card-info">
-                    <span class="card-title" id="card-title">Tap to Speak</span>
+                    <span class="card-title">Tap to Speak</span>
                     <span class="card-sub" id="card-subtitle">For current Gonzaga students: see how your major connects to the Accelerated MBA</span>
                 </span>
             </button>
@@ -397,21 +371,19 @@
         <div class="pilot-note">
             <p class="pilot-label">A pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs, not an official Gonzaga University service. Official program information is on the <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba" target="_blank" rel="noopener">Gonzaga MBA website</a>.</p>
             <p>Official pages: <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba" target="_blank" rel="noopener">MBA</a> &middot; <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/accelerated-mba" target="_blank" rel="noopener">Accelerated MBA</a> &middot; <a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/how-to-apply" target="_blank" rel="noopener">How to Apply</a></p>
-            <p>The Concierge is an AI voice assistant. Your conversation is processed by ElevenLabs, an outside service. Please don't share personal information such as your student ID, grades, or contact details.</p>
+            <p>The Concierge is an AI voice assistant. Your conversation is processed by ElevenLabs, an outside service. Please don't share personal information such as your GU ID, email address, or Social Security number.</p>
             <p>Prefer not to use voice? Explore the <a href="pathways/">pathways page</a>, or contact Graduate Admissions at <a href="mailto:gradadmissions@gonzaga.edu">gradadmissions@gonzaga.edu</a> or (866) 380-5323.</p>
         </div>
     </div>
 
     <div id="agent-screen">
-        <h2 id="agent-title" class="sr-only" tabindex="-1">Conversation with the MBA Concierge</h2>
-        <button type="button" class="back-button" onclick="resetLobby()"><span aria-hidden="true">← </span>End Chat</button>
+        <button type="button" class="back-button" onclick="resetLobby()"><span aria-hidden="true">←</span> End Chat</button>
 
-        <button type="button" id="contact-toggle" class="contact-toggle-btn" onclick="toggleContactInfo()"
-            aria-expanded="false" aria-controls="info-prospective">
+        <button type="button" id="contact-toggle" class="contact-toggle-btn" onclick="toggleContactInfo()" aria-expanded="false" aria-controls="info-prospective">
             <span aria-hidden="true">ℹ️</span> <span>Contact Info</span>
         </button>
 
-        <div id="info-prospective" class="contact-info" role="region" aria-label="Contact information">
+        <div id="info-prospective" class="contact-info">
             <div class="contact-block">
                 <h3>Trevor Heilman</h3>
                 <span class="role">Admissions Specialist<br>MBA and MSBA Business Administration Track</span>
@@ -464,11 +436,12 @@
             </div>
         </div>
 
-        <div class="timeout-warning" id="timeout-msg" role="status">Closing in 10s...</div>
+        <div class="timeout-warning" id="timeout-msg" role="status" aria-live="polite">Closing in 10s...</div>
 
         <div id="widget-container">
         </div>
     </div>
+
 </main>
 
     <script>
@@ -526,11 +499,7 @@
             widget.setAttribute('dynamic-variables', JSON.stringify({ major: major, opening_question: openingQuestion }));
             container.appendChild(widget);
 
-            // 4. Move keyboard and screen reader focus to the conversation screen
-            document.getElementById('contact-toggle').setAttribute('aria-expanded', 'false');
-            document.getElementById('agent-title').focus();
-
-            // 5. Start the initial timer
+            // 4. Start the initial timer
             startIdleTimer();
         }
 
@@ -549,7 +518,7 @@
             if (el) {
                 const open = el.style.display !== 'block';
                 el.style.display = open ? 'block' : 'none';
-                document.getElementById('contact-toggle').setAttribute('aria-expanded', String(open));
+                document.getElementById('contact-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
             }
             startIdleTimer(); // Interaction resets timer
         }
@@ -566,14 +535,10 @@
             // Hide contact info blocks on reset
             const infoProspective = document.getElementById('info-prospective');
             if (infoProspective) infoProspective.style.display = 'none';
-
             document.getElementById('contact-toggle').setAttribute('aria-expanded', 'false');
 
             currentMode = '';
             clearTimeout(idleTimer);
-
-            // Return focus to the start button
-            document.querySelector('.agent-card').focus();
         }
 
         function startIdleTimer() {
@@ -581,20 +546,12 @@
             document.getElementById('timeout-msg').style.display = 'none';
 
             console.log("Starting Idle Timer (" + IDLE_TIMEOUT_SECONDS + "s)");
-            idleTimer = setTimeout(() => {
-                console.log("Idle timeout reached. Resetting.");
-                resetLobby();
-            }, IDLE_TIMEOUT_SECONDS * 1000);
+            // Auto-reset is turned off so a voice conversation is never cut off (WCAG 2.2.1, Timing Adjustable).
+            // The agent ends the conversation itself after silence.
         }
 
         // Reset timer on interactions
         document.addEventListener('click', () => {
-            if (document.getElementById('agent-screen').style.display === 'block') {
-                startIdleTimer();
-            }
-        });
-
-        document.addEventListener('keydown', () => {
             if (document.getElementById('agent-screen').style.display === 'block') {
                 startIdleTimer();
             }
