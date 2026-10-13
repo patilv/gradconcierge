@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Major + MBA | A pilot project led by Dr. Vivek Patil</title>
+<meta name="description" content="Two pilot tools for current Gonzaga students: MBA Pathways and the MBA Concierge. A pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap">
+<style>
+  :root { --blue:#06274F; --river:#5E8AB4; --river30:#CEDBE8; --wheat30:#F5EFE0; --ink:#1d2430; --muted:#46617D; --gold:#C5B358; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Figtree, "Segoe UI", Arial, sans-serif; color:var(--ink); background:#fff; line-height:1.6; }
+  a { color: var(--blue); }
+  a:focus-visible, .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .skip { position:absolute; left:-9999px; top:0; background:#fff; padding:8px 12px; z-index:10; }
+  .skip:focus { left:12px; top:12px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  header { background: var(--blue); color:#fff; }
+  header .wrap { padding-top: 36px; padding-bottom: 36px; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--river30); margin: 0 0 10px; }
+  h1 { font-family: "Frank Ruhl Libre", Georgia, serif; font-weight: 900; font-size: clamp(34px, 6vw, 52px); line-height: 1.05; margin: 0 0 14px; }
+  header p { margin: 0; font-size: 18px; max-width: 640px; }
+  .pilot { margin-top: 14px; font-size: 14px; color: var(--river30); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 16px 56px; }
+  h2 { font-size: 22px; color: var(--blue); margin: 36px 0 10px; line-height: 1.25; }
+  p { margin: 0 0 14px; font-size: 16px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 8px 0; }
+  .card { border: 1px solid var(--river30); border-top: 5px solid var(--blue); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .card h2 { margin: 0; font-size: 21px; }
+  .card p { margin: 0; font-size: 15.5px; }
+  .tag { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .btn { margin-top: auto; align-self: flex-start; display: inline-block; background: var(--blue); color: #fff; text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 18px; border-radius: 4px; }
+  .btn:hover { background: #0b3a73; color:#fff; }
+  .notice { margin-top: 28px; background: var(--wheat30); border: 1px solid #DECB99; padding: 20px 22px; }
+  .notice h2 { margin: 0 0 8px; font-size: 18px; }
+  .notice p { font-size: 15px; margin: 0 0 10px; }
+  .notice p:last-child { margin-bottom: 0; }
+  .person { display: flex; gap: 24px; align-items: center; border: 2px solid var(--blue); border-radius: 6px; padding: 18px 20px 0; margin-top: 8px; }
+  .person .txt { flex: 1; padding-bottom: 18px; }
+  .person img { flex: none; width: 140px; height: auto; display: block; align-self: flex-end; }
+  .person b { color: var(--blue); }
+  .taffy { margin-top: 12px; font-family: "Frank Ruhl Libre", Georgia, serif; font-weight: 700; font-size: 18px; color: var(--blue); line-height: 1.35; }
+  .admit { margin-top: 14px; font-size: 15px; }
+  ul.links { padding-left: 20px; margin: 0; }
+  ul.links li { margin-bottom: 4px; }
+  footer { border-top: 1px solid var(--river30); }
+  footer .wrap { padding-top: 18px; padding-bottom: 28px; font-size: 13px; color: var(--muted); }
+  @media (max-width: 560px) {
+    .person { flex-direction: column; align-items: stretch; }
+    .person img { align-self: center; width: 130px; }
+    .person .txt { padding-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <p class="eyebrow">For current Gonzaga students</p>
+    <h1>Your major + MBA</h1>
+    <p>Wondering what an MBA could add to your major? Two tools can help. One maps your major to the MBA. The other lets you talk it through with an AI voice assistant.</p>
+    <p class="pilot">A pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs</p>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="cards">
+    <section class="card" aria-labelledby="pathways-title">
+      <p class="tag">Read and explore</p>
+      <h2 id="pathways-title">MBA Pathways</h2>
+      <p>Pick your major. See what you already bring, which MBA courses build on it, and the careers the two can open. Majors from every Gonzaga school are included, business majors too.</p>
+      <a class="btn" href="../pathways/">Open MBA Pathways</a>
+    </section>
+
+    <section class="card" aria-labelledby="concierge-title">
+      <p class="tag">Talk it through</p>
+      <h2 id="concierge-title">MBA Concierge</h2>
+      <p>Tell an AI voice assistant your major and the work you want to do. It explains how the MBA fits, including the Accelerated MBA you can start as a senior. It takes about five minutes.</p>
+      <a class="btn" href="../">Talk with the MBA Concierge</a>
+    </section>
+  </div>
+
+  <section class="notice" aria-labelledby="notice-title">
+    <h2 id="notice-title">About these tools</h2>
+    <p>This site is the personal website of Dr. Vivek H. Patil, Director of Graduate Business Programs. Both tools are pilot projects led by Dr. Patil. They are not official Gonzaga University services.</p>
+    <p>For official program details, tuition, and deadlines, use the MBA pages on gonzaga.edu. If a pilot tool and an official page disagree, the official page is correct.</p>
+    <p>The MBA Concierge uses ElevenLabs, an outside service, to process conversations. Please don't share personal information such as your GU ID, email address, or Social Security number.</p>
+  </section>
+
+  <h2 id="person-title">Rather talk with a person?</h2>
+  <section class="person" aria-labelledby="person-title">
+    <div class="txt">
+      <b>Dr. Vivek H. Patil</b><br>
+      Director of Graduate Business Programs<br>
+      <a href="mailto:patil@gonzaga.edu">patil@gonzaga.edu</a><br>
+      509-313-7046
+      <p class="taffy">Meet in person and pet Taffy, a 4-month-old ferocious Bernedoodle, while you learn about the program.</p>
+      <p class="admit">Graduate Admissions: <a href="mailto:gradadmissions@gonzaga.edu">gradadmissions@gonzaga.edu</a>, call or text (866) 380-5323</p>
+    </div>
+    <img src="taffy.webp" width="320" height="650" alt="Taffy, a fluffy black, white, and tan Bernedoodle puppy in a pink harness, with her tongue out">
+  </section>
+
+  <h2>Official MBA pages</h2>
+  <ul class="links">
+    <li><a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba">MBA</a></li>
+    <li><a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/accelerated-mba">Accelerated MBA</a></li>
+    <li><a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/how-to-apply">How to Apply</a></li>
+    <li><a href="https://www.gonzaga.edu/school-of-business-administration/graduate/mba/tuition-and-financing">Tuition and Financing</a></li>
+  </ul>
+</main>
+
+<footer>
+  <div class="wrap">MBA Pathways and the MBA Concierge are a pilot project led by Dr. Vivek Patil, Director of Graduate Business Programs. Not an official Gonzaga University service.</div>
+</footer>
+</body>
+</html>
